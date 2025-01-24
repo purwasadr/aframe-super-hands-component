@@ -4,7 +4,7 @@ const physicsCore = require('./prototypes/physics-grab-proto.js')
 const buttonsCore = require('./prototypes/buttons-proto.js')
 // new object with all core modules
 const base = inherit({}, physicsCore, buttonsCore)
-AFRAME.registerComponent('grabbable', inherit(base, {
+AFRAME.registerComponent('graspable', inherit(base, {
   schema: {
     maxGrabbers: { type: 'int', default: NaN },
     invert: { default: false },
