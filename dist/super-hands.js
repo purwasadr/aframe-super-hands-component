@@ -8,7 +8,7 @@ if (typeof AFRAME === 'undefined') {
 }
 require('./systems/super-hands-system.js');
 require('./reaction_components/hoverable.js');
-require('./reaction_components/grabbable.js');
+require('./reaction_components/graspable.js');
 require('./reaction_components/stretchable.js');
 require('./reaction_components/drag-droppable.js');
 require('./reaction_components/draggable.js');
@@ -287,6 +287,9 @@ AFRAME.registerComponent('super-hands', {
     const hoverEls = this.hoverEls;
     const hitElIndex = this.hoverEls.indexOf(hitEl);
     let hoverNeedsUpdate = false;
+    if (dist && intersection.instanceId !== undefined) hitEl.object3D.userData = {
+      instanceId: intersection.instanceId
+    };
     if (hitElIndex === -1) {
       hoverNeedsUpdate = true;
       // insert in order of distance when available
@@ -541,7 +544,7 @@ AFRAME.registerComponent('super-hands', {
   }
 });
 
-},{"./reaction_components/clickable.js":2,"./reaction_components/drag-droppable.js":3,"./reaction_components/draggable.js":4,"./reaction_components/droppable.js":5,"./reaction_components/grabbable.js":6,"./reaction_components/hoverable.js":7,"./reaction_components/stretchable.js":10,"./systems/super-hands-system.js":11}],2:[function(require,module,exports){
+},{"./reaction_components/clickable.js":2,"./reaction_components/drag-droppable.js":3,"./reaction_components/draggable.js":4,"./reaction_components/droppable.js":5,"./reaction_components/graspable.js":6,"./reaction_components/hoverable.js":7,"./reaction_components/stretchable.js":10,"./systems/super-hands-system.js":11}],2:[function(require,module,exports){
 "use strict";
 
 /* global AFRAME */
@@ -846,7 +849,7 @@ const physicsCore = require('./prototypes/physics-grab-proto.js');
 const buttonsCore = require('./prototypes/buttons-proto.js');
 // new object with all core modules
 const base = inherit({}, physicsCore, buttonsCore);
-AFRAME.registerComponent('grabbable', inherit(base, {
+AFRAME.registerComponent('graspable', inherit(base, {
   schema: {
     maxGrabbers: {
       type: 'int',
@@ -1204,7 +1207,6 @@ AFRAME.registerComponent('stretchable', inherit(base, {
       evt.preventDefault();
     } // gesture accepted
   },
-
   end: function (evt) {
     const stretcherIndex = this.stretchers.indexOf(evt.detail.hand);
     if (evt.defaultPrevented || !this.endButtonOk(evt)) {
